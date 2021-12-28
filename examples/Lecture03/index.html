@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html ng-app="Msgapp">
+  <head>
+    <meta charset="utf-8" />
+    <script src="angular.min.js"></script>
+    <script src="app.js"></script>
+    <title>Lecture 02 - Single Page Web Applications with AngularJS</title>
+  </head>
+  <body>
+    <h1>My Angular App.</h1>
+    <div ng-controller="MsgController">
+      <h3>
+        {{name}} has a message for you: <br />
+        {{sayHello()}}
+      </h3>
+    </div>
+  </body>
+</html>
