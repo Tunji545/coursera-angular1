@@ -1,20 +1,29 @@
-var numberArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-console.log("Number array: ", numberArray);
+const numberArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-function above5Filter(value) {
+function filterList(value) {
   return value > 5;
 }
-var filteredNumberArray = numberArray.filter(above5Filter);
-console.log("Filtered number array: ", filteredNumberArray);
 
-var shoppingList = [
-  "Milk", "Donuts", "Cookies", "Chocolate", "Peanut Butter", "Pepto Bismol", "Pepto Bismol (Chocolate flavor)", "Pepto Bismol (Cookie flavor)"
+const filteredNumberArray = numberArray.filter(filterList);
+
+const foodList = [
+  'Donuts',
+  'cheese',
+  'cookies',
+  'pie',
+  'burgar',
+  'peanut',
+  'milk',
+  'peptol bismol',
+  'pepto bismol (chocolate flavour)',
+  'peptol bismol (cookie flavor)',
 ];
-console.log("Shopping List: ", shoppingList);
 
-var searchValue = "Bismol";
-function containsFilter(value) {
-  return value.indexOf(searchValue) !== -1;
+const searchFood = 'bismol';
+function filterFoodList(food) {
+  return food.indexOf(searchFood) !== -1;
 }
-var searchedShoppingList = shoppingList.filter(containsFilter);
-console.log("Searched Shopping List: ", searchedShoppingList);
+
+const filteredFoodList = foodList.filter(filterFoodList);
+
+console.log(filteredFoodList);

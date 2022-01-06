@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html ng-app="ShoppingListApp">
+  <head>
+    <meta charset="utf-8" />
+    <script src="angular.min.js"></script>
+    <script src="app.js"></script>
+    <title>Lecture 02 - Single Page Web Applications with AngularJS</title>
+  </head>
+  <body>
+    <h1>My Angular App.</h1>
+    <div ng-controller="ShoppingListController">
+      <h1>Shopping List</h1>
+      <!-- <ul>
+        <li ng-repeat="item in shoppingList1">{{item}}</li>
+      </ul> -->
+      <!-- <ul>
+        <li ng-repeat="item in shoppingList1">
+          Buy {{item.quantity}} quantity of {{item.name}}
+        </li>
+      </ul> -->
+      <input
+        type="text"
+        ng-model="shoppingList1[0].quantity"
+        placeholder="change quantity"
+      />
+      <ul>
+        <li ng-repeat="item in shoppingList1">
+          {{$index + 1}}. Buy {{item.quantity}} quantity of {{item.name}}
+        </li>
+      </ul>
+
+      <input type="text" ng-model="newItemName" placeholder="New Name" />
+      <input
+        type="text"
+        ng-model="newItemQuantity"
+        placeholder="New Quantity"
+      />
+      <button ng-click="addItem()">ADD ITEM</button>
+    </div>
+  </body>
+</html>

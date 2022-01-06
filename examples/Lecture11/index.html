@@ -17,7 +17,10 @@
     <h1>Expressions and Interpolation</h1>
     <div ng-controller="MsgController">
       <div>
+        <p>{{name}} has a message for you.</p>
+        <p>{{msg}}</p>
         <button ng-click="feedYaakov()">feed Yaakov</button>
+        <p>{{cost | currency : '#blah' : 4}}</p>
         <br />
         <img ng-src="images/yaakov_{{stateOfBeing}}.png" />
       </div>

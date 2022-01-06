@@ -1,84 +1,76 @@
 (function () {
-'use strict';
+  'use strict';
 
-angular.module('ShoppingListApp', [])
-.controller('ShoppingListController', ShoppingListController)
-.provider('ShoppingListService', ShoppingListServiceProvider)
-.config(Config);
+  angular
+    .module('ShoppingListApp', [])
+    .controller('ShoppingListController', ShoppingListController)
+    .provider('ShoppingListService', ShoppingListServiceProvider)
+    .config(config);
 
-Config.$inject = ['ShoppingListServiceProvider'];
-function Config(ShoppingListServiceProvider) {
-  // Save Yaakov from himself
-  ShoppingListServiceProvider.defaults.maxItems = 2;
-}
+  config.$inject = ['ShoppingListServiceProvider'];
+  function config(ShoppingListServiceProvider) {
+    ShoppingListServiceProvider.defaults.maxItems = 2;
+  }
 
+  ShoppingListController.$inject = ['ShoppingListService'];
+  function ShoppingListController(ShoppingListService) {
+    const list = this;
+    list.items = ShoppingListService.getItems();
 
-ShoppingListController.$inject = ['ShoppingListService'];
-function ShoppingListController(ShoppingListService) {
-  var list = this;
+    list.itemName = '';
+    list.itemQuantity = null;
 
-  list.items = ShoppingListService.getItems();
+    list.addItem = function () {
+      try {
+        ShoppingListService.addItem(list.itemName, list.itemQuantity);
+      } catch (error) {
+        list.errorMessage = error.message;
+      }
+    };
 
-  list.itemName = "";
-  list.itemQuantity = "";
+    list.removeItem = function (itemIndex) {
+      ShoppingListService.removeItem(itemIndex);
+    };
+  }
 
-  list.addItem = function () {
-    try {
-      ShoppingListService.addItem(list.itemName, list.itemQuantity);
-    } catch (error) {
-      list.errorMessage = error.message;
-    }
-  };
+  function ShoppingListService(maxItems) {
+    const service = this;
+    const items = [];
 
-  list.removeItem = function (itemIndex) {
-    ShoppingListService.removeItem(itemIndex);
-  };
-}
+    service.addItem = function (name, quantity) {
+      if (
+        maxItems === undefined ||
+        (maxItems !== undefined && items.length < maxItems)
+      ) {
+        const item = {
+          name,
+          quantity,
+        };
+        items.push(item);
+      } else {
+        throw new Error('Max number ( ' + maxItems + ' ) is reached.');
+      }
+    };
 
+    service.removeItem = function (itemIndex) {
+      items.splice(itemIndex, 1);
+    };
 
-// If not specified, maxItems assumed unlimited
-function ShoppingListService(maxItems) {
-  var service = this;
+    service.getItems = function () {
+      return items;
+    };
+  }
 
-  // List of shopping items
-  var items = [];
+  function ShoppingListServiceProvider() {
+    const provider = this;
 
-  service.addItem = function (itemName, quantity) {
-    if ((maxItems === undefined) ||
-        (maxItems !== undefined) && (items.length < maxItems)) {
-      var item = {
-        name: itemName,
-        quantity: quantity
-      };
-      items.push(item);
-    }
-    else {
-      throw new Error("Max items (" + maxItems + ") reached.");
-    }
-  };
+    provider.defaults = {
+      maxItems: 10,
+    };
 
-  service.removeItem = function (itemIndex) {
-    items.splice(itemIndex, 1);
-  };
-
-  service.getItems = function () {
-    return items;
-  };
-}
-
-
-function ShoppingListServiceProvider() {
-  var provider = this;
-
-  provider.defaults = {
-    maxItems: 10
-  };
-
-  provider.$get = function () {
-    var shoppingList = new ShoppingListService(provider.defaults.maxItems);
-
-    return shoppingList;
-  };
-}
-
+    provider.$get = function () {
+      const ShoppingList = new ShoppingListService(provider.defaults.maxItems);
+      return ShoppingList;
+    };
+  }
 })();
